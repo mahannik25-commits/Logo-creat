@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>فروش لوگو — خرید</title>
+  <style>
+    body{font-family:Tahoma,system-ui;background:#f5f7fb;margin:0;padding:20px;display:flex;align-items:center;justify-content:center;min-height:100vh}
+    .box{width:100%;max-width:420px;background:#fff;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.08);padding:18px;text-align:center}
+    h1{margin:0 0 10px;font-size:20px}
+    p{color:#555;margin:0 0 16px}
+    .btn{display:inline-block;padding:12px 18px;border-radius:10px;background:#0d6efd;color:#fff;text-decoration:none;cursor:pointer;border:0;font-size:15px}
+    .note{margin-top:12px;color:#777;font-size:13px}
+    .fallback{display:none;margin-top:12px;text-align:left}
+    .linkfield{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px}
+    .copybtn{margin-top:8px;padding:8px 10px;border-radius:8px;border:1px solid #ccc;background:#fafafa;cursor:pointer}
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <h1>خرید لوگو</h1>
+    <p>برای مشاهدهٔ عکس‌ها و خرید، روی دکمهٔ زیر بزن — لینک به وب تلگرام باز می‌شود.</p>
+
+    <!-- روش مستقیم (سازگار با WebCode و مرورگر موبایل) -->
+    <button class="btn" id="buyBtn">خرید</button>
+
+    <div class="note">اگر صفحه باز نشد، لینک زیر را کپی کن یا در مرورگر باز کن.</div>
+
+    <div class="fallback" id="fallback">
+      <input id="buyLink" class="linkfield" readonly />
+      <button class="copybtn" id="copyBtn">کپی لینک</button>
+    </div>
+  </div>
+
+<script>
+  // لینک مورد نظر
+  const BUY_URL = "https://t.me/Logo_design103/20?single";
+
+  // دکمه خرید — از location.href استفاده می‌کنیم تا popup بلاک نشه
+  document.getElementById('buyBtn').addEventListener('click', function(){
+    try {
+      // هدایت مستقیم (این روش معمولاً در WebView / WebCode جواب میده)
+      location.href = BUY_URL;
+    } catch(e) {
+      // اگر به هر دلیلی اجرا نشد، fallback نمایش داده می‌شود
+      showFallback();
+    }
+    // بعد از دستور بالا، اگر مرورگر بلاک کنه یا scheme ناشناخته باشه
+    // برای اطمینان fallback رو کمی بعد نمایش می‌کنیم
+    setTimeout(() => {
+      // اگر هنوز صفحه تغییر نکرده باشه (مانند وقتی sandbox بلاک کرده)
+      if(location.href.indexOf("t.me") === -1) showFallback();
+    }, 600);
+  });
+
+  function showFallback(){
+    const fb = document.getElementById('fallback');
+    const inp = document.getElementById('buyLink');
+    inp.value = BUY_URL;
+    fb.style.display = 'block';
+    inp.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+
+  // دکمه کپی
+  document.getElementById('copyBtn').addEventListener('click', async function(){
+    const url = document.getElementById('buyLink').value;
+    try {
+      await navigator.clipboard.writeText(url);
+      this.textContent = 'کپی شد ✅';
+      setTimeout(()=> this.textContent = 'کپی لینک', 1800);
+    } catch(e) {
+      alert('کپی خودکار پشتیبانی نشد — لینک را دستی انتخاب و کپی کن:\n' + url);
+    }
+  });
+</script>
+
+</body>
+</html>
